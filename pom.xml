@@ -15,7 +15,44 @@
     </properties>
 
     <dependencies>
-
+        <!-- 测试启动的时候，使用flyway自动初始化数据库。 -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.2.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.2.3</version>
+                <dependencies>
+                    <!-- 配置flyway使用的数据库驱动 -->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.29</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <!-- 配置目标数据库连接 -->
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/db_rbac?characterEncoding=utf-8</url>
+                    <user>root</user>
+                    <password>password</password>
+                    <!-- 配置数据库脚本位置，本里中对应/src/main/db/migration -->
+                    <locations>
+                        <location>classpath:/db/mysql</location>
+                    </locations>
+                    <!-- 设置sql脚本文件的编码 -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
