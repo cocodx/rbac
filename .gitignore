@@ -41,3 +41,5 @@ build/
 .idea/vcs.xml
 .idea/misc.xml
 .idea/encodings.xml
+/target/
+/out/
