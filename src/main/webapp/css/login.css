@@ -95,6 +95,20 @@ body{
     align-items: center;
 }
 
+.input-box .input-image{
+    width: 60%;
+    height: 40px;
+    margin-bottom: 20px;
+    clear: both;
+}
+
+.input-box .input-image input{
+    float: left;
+}
+.input-box .input-image image{
+    float: right;
+}
+
 input{
     width: 60%;
     height: 40px;

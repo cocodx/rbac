@@ -43,6 +43,10 @@
         <div class="input-box">
             <input type="text" id="userName" name="userName" placeholder="用户名">
             <input type="password" id="password" name="password" placeholder="密码">
+            <div class="input-image">
+                <input type="text" placeholder="验证码">
+                <img id="code" src="${pageContext.request.contextPath}/user?action=code" onclick="getCode()" alt="验证码">
+            </div>
         </div>
         <div class="btn-box">
             <button onclick="login()">登录</button>
@@ -90,6 +94,12 @@
                 alert("异常！");
             }
         })
+    };
+    const getCode=()=>{
+        $("#code").click(function () {
+            var randomStr = Math.random();
+            this.src="${pageContext.request.contextPath}/user?action=code&number="+randomStr
+        });
     }
 </script>
 </body>
