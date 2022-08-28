@@ -8,6 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <%
+        if (session.getAttribute("currentUser")==null){
+            response.sendRedirect("login.jsp");
+        }
+    %>
     <title>rbac-主界面</title>
     <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="stylesheet" type="text/css" href="./easyui/themes/default/easyui.css">
