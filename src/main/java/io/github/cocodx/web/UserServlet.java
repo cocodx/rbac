@@ -48,7 +48,10 @@ public class UserServlet extends HttpServlet {
             }
         }
         if (action.equals("main")){
-            req.getRequestDispatcher("main.jsp").forward(req,resp);
+            //内部跳转
+//            req.getRequestDispatcher("main.jsp").forward(req,resp);
+            //不带任何信息，session中的信息会获取到
+            resp.sendRedirect("main.jsp");
         }
 
 
@@ -78,6 +81,7 @@ public class UserServlet extends HttpServlet {
         if (user == null) {
             json(response, Result.fail("温馨提示：用户名或密码错误，未找到此用户！"));
         }else{
+            request.getSession().setAttribute("currentUser",user);
             json(response, Result.success("登录成功！"));
         }
     }

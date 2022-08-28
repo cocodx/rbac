@@ -11,6 +11,6 @@
     <title>rbac-主界面</title>
 </head>
 <body>
-系统主界面
+系统主界面 ${currentUser.userName}
 </body>
 </html>
