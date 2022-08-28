@@ -35,13 +35,25 @@ public class Result<T> implements Serializable {
         this.msg = msg;
     }
 
-    public static Result success(){
+    public static Result success() {
         Result result = new Result().setCode(200).setMsg("succcess");
         return result;
     }
 
-    public static Result fail(){
+    public static Result fail() {
         Result result = new Result().setCode(500).setMsg("fail");
         return result;
+    }
+
+    public static Result success(String msg) {
+        Result success = success();
+        success.setMsg(msg);
+        return success;
+    }
+
+    public static Result fail(String msg) {
+        Result fail = fail();
+        fail.setMsg(msg);
+        return fail;
     }
 }

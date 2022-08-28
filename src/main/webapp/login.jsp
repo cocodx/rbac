@@ -44,8 +44,9 @@
             <input type="text" id="userName" name="userName" placeholder="用户名">
             <input type="password" id="password" name="password" placeholder="密码">
             <div class="input-image">
-                <input type="text" placeholder="验证码">
-                <img id="code" src="${pageContext.request.contextPath}/user?action=code" onclick="getCode()" alt="验证码">
+                <input type="text" id="codeStr" name="codeStr" placeholder="验证码">
+                <img id="code" src="${pageContext.request.contextPath}/user?action=code" onclick="getCode()"
+                     alt="验证码">
             </div>
         </div>
         <div class="btn-box">
@@ -56,49 +57,59 @@
 </div>
 <script>
     let flag = true;
-    const mySwitch=()=>{
-        if (flag==true){
-            $(".pre-box").css("transform","translateX(100%)");
-            $(".pre-box").css("background-color","#accae1");
-            $("img").attr("src","./imgs/waoku.jpg");
-        }else{
-            $(".pre-box").css("transform","translateX(0%)");
-            $(".pre-box").css("background-color","#e2c3d3");
-            $("img").attr("src","./imgs/wuwu.jpeg");
+    const mySwitch = () => {
+        if (flag == true) {
+            $(".pre-box").css("transform", "translateX(100%)");
+            $(".pre-box").css("background-color", "#accae1");
+            $("img").attr("src", "./imgs/waoku.jpg");
+        } else {
+            $(".pre-box").css("transform", "translateX(0%)");
+            $(".pre-box").css("background-color", "#e2c3d3");
+            $("img").attr("src", "./imgs/wuwu.jpeg");
         }
-        flag=!flag;
+        flag = !flag;
     };
-    const login=()=>{
+    const login = () => {
         var userName = $("#userName").val();
         var password = $("#password").val();
-        if (userName=='' || userName==null || password=='' || password==null){
+        var code = $("#codeStr").val();
+        if (userName == '' || userName == null || password == '' || password == null) {
             alert("用户名或者密码不能为空！")
             return;
         }
-        var user={
-            "userName":$("#userName").val(),
-            "password":$("#password").val()
+
+        if (code == '' || code == null) {
+            alert("验证码不能为空！")
+            return;
+        }
+        var user = {
+            "userName": userName,
+            "password": password,
+            "code": code
         }
         $.ajax({
-            type: "POST",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "${pageContext.request.contextPath}/login" ,//url
+            type: "POST",
+            dataType: "json",
+            url: "${pageContext.request.contextPath}/user?action=login",
+            data: user,
             success: function (result) {
                 console.log(result);//打印服务端返回的数据(调试用)
-                if (result.code == 200) {
-                    alert("SUCCESS");
+                if (result.code === 200) {
+                    location.href="${pageContext.request.contextPath}/user?action=main"
+                } else {
+                    alert(result.msg)
                 }
                 ;
             },
-            error : function() {
+            error: function () {
                 alert("异常！");
             }
         })
     };
-    const getCode=()=>{
+    const getCode = () => {
         $("#code").click(function () {
             var randomStr = Math.random();
-            this.src="${pageContext.request.contextPath}/user?action=code&number="+randomStr
+            this.src = "${pageContext.request.contextPath}/user?action=code&number=" + randomStr
         });
     }
 </script>
