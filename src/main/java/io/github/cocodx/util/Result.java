@@ -1,10 +1,13 @@
 package io.github.cocodx.util;
 
+import io.github.cocodx.vo.AuthVo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author amazfit
@@ -13,6 +16,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Result<T> implements Serializable {
 
     /**
@@ -36,24 +40,24 @@ public class Result<T> implements Serializable {
     }
 
     public static Result success() {
-        Result result = new Result().setCode(200).setMsg("succcess");
-        return result;
+        return new Result().setCode(200).setMsg("success");
     }
 
     public static Result fail() {
-        Result result = new Result().setCode(500).setMsg("fail");
-        return result;
+        return new Result().setCode(500).setMsg("fail");
     }
 
-    public static Result success(String msg) {
-        Result success = success();
-        success.setMsg(msg);
+    public Result<T> success(T data){
+        Result<T> success = new Result<T>();
+        success.setData(data);
         return success;
     }
 
+    public static Result success(String msg) {
+        return success().setMsg(msg);
+    }
+
     public static Result fail(String msg) {
-        Result fail = fail();
-        fail.setMsg(msg);
-        return fail;
+        return fail().setMsg(msg);
     }
 }

@@ -22,7 +22,9 @@
     </div>
 <%--    <div data-options="region:'south',title:'South Title',split:true" style="height:20%;"></div>--%>
 <%--    <div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>--%>
-    <div data-options="region:'west',title:'菜单',split:true" style="width:20%;"></div>
+    <div data-options="region:'west',title:'菜单',split:true" style="width:20%;">
+        <ul class="easyui-tree" data-options="url:'${pageContext.request.contextPath}/auth?action=tree'"></ul>
+    </div>
     <div data-options="region:'center',title:'内容中心'" style="padding:5px;background-color:#eee;"></div>
 </div>
 

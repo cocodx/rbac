@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cocodx.dao.UserDao;
 import io.github.cocodx.entity.User;
 import io.github.cocodx.util.DbUtil;
+import io.github.cocodx.util.JsonUtil;
 import io.github.cocodx.util.Result;
 import io.github.cocodx.util.StrUtil;
 import io.github.cocodx.vo.UserVo;
@@ -69,20 +70,17 @@ public class UserServlet extends HttpServlet {
         String password = request.getParameter("password");
         String verifyCode = request.getParameter("code");
         UserVo userVo = new UserVo().setUserName(userName).setPassword(password).setCode(verifyCode);
-
-
-        ObjectMapper objectMapper = new ObjectMapper();
         String code = (String) request.getSession().getAttribute("code");
         if (!userVo.getCode().equalsIgnoreCase(code)) {
-            json(response, Result.fail("温馨提示：验证码错误！"));
+            JsonUtil.json(response, Result.fail("温馨提示：验证码错误！"));
         }
 
         User user = userDao.login(userVo, DbUtil.connection());
         if (user == null) {
-            json(response, Result.fail("温馨提示：用户名或密码错误，未找到此用户！"));
+            JsonUtil.json(response, Result.fail("温馨提示：用户名或密码错误，未找到此用户！"));
         }else{
             request.getSession().setAttribute("currentUser",user);
-            json(response, Result.success("登录成功！"));
+            JsonUtil.json(response, Result.success("登录成功！"));
         }
     }
 
@@ -121,11 +119,5 @@ public class UserServlet extends HttpServlet {
         outputStream.close();
     }
 
-    public static void json(HttpServletResponse resp, Result result) throws IOException {
-        resp.setCharacterEncoding("utf-8");
-        resp.setContentType("application/json; charset=utf-8");
-        PrintWriter writer = resp.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        writer.write(objectMapper.writeValueAsString(result));
-    }
+
 }
