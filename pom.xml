@@ -95,7 +95,7 @@
                     <password>password</password>
                     <!-- 配置数据库脚本位置，本里中对应/src/main/db/migration -->
                     <locations>
-                        <location>classpath:/db/mysql</location>
+                        <location>filesystem:src/main/resources/db/migration</location>
                     </locations>
                     <!-- 设置sql脚本文件的编码 -->
                     <encoding>UTF-8</encoding>

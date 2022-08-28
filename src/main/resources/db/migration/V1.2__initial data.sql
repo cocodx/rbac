@@ -1,0 +1,17 @@
+INSERT  INTO `t_auth` VALUES
+(1,'某系统','',-1,NULL,0,'icon-home'),
+(2,'权限管理','',1,NULL,0,'icon-permission'),
+(3,'学生管理','',1,NULL,0,'icon-student'),
+(4,'课程管理','',1,NULL,0,'icon-course'),
+(5,'住宿管理','zsgl.html',3,NULL,1,'icon-item'),
+(6,'学生信息管理','xsxxgl.html',3,NULL,1,'icon-item'),
+(7,'学籍管理','xjgl.html',3,NULL,1,'icon-item'),
+(8,'奖惩管理','jcgl.html',3,NULL,1,'icon-item'),
+(9,'课程设置','kcsz.html',4,NULL,1,'icon-item'),
+(10,'选课情况','xkqk.html',4,NULL,1,'icon-item'),
+(11,'成绩录入','cjlr.html',4,NULL,1,'icon-item'),
+(12,'用户管理','userManage.html',2,NULL,1,'icon-userManage'),
+(13,'角色管理','roleManage.html',2,NULL,1,'icon-roleManage'),
+(14,'菜单管理','menuManage.html',2,NULL,1,'icon-menuManage'),
+(15,'修改密码','',1,NULL,1,'icon-modifyPassword'),
+(16,'安全退出','',1,NULL,1,'icon-exit');
