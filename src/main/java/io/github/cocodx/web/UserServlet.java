@@ -1,13 +1,16 @@
 package io.github.cocodx.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.hutool.core.bean.BeanUtil;
+import io.github.cocodx.dao.RoleDao;
 import io.github.cocodx.dao.UserDao;
+import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.dto.UserDto;
+import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
 import io.github.cocodx.util.Result;
 import io.github.cocodx.util.StrUtil;
-import io.github.cocodx.vo.UserVo;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -18,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -29,6 +31,8 @@ import java.util.Random;
 public class UserServlet extends HttpServlet {
 
     private UserDao userDao = new UserDao();
+
+    private RoleDao roleDao = new RoleDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -69,17 +73,21 @@ public class UserServlet extends HttpServlet {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         String verifyCode = request.getParameter("code");
-        UserVo userVo = new UserVo().setUserName(userName).setPassword(password).setCode(verifyCode);
+        UserDto userDto = new UserDto().setUserName(userName).setPassword(password).setCode(verifyCode);
         String code = (String) request.getSession().getAttribute("code");
-        if (!userVo.getCode().equalsIgnoreCase(code)) {
+        if (!userDto.getCode().equalsIgnoreCase(code)) {
             JsonUtil.json(response, Result.fail("温馨提示：验证码错误！"));
         }
 
-        User user = userDao.login(userVo, DbUtil.connection());
+        User user = userDao.login(userDto, DbUtil.connection());
         if (user == null) {
             JsonUtil.json(response, Result.fail("温馨提示：用户名或密码错误，未找到此用户！"));
         }else{
-            request.getSession().setAttribute("currentUser",user);
+            Role role = roleDao.findRoleById(user.getRoleId(), DbUtil.connection());
+            UserVo userVo2 = new UserVo();
+            BeanUtil.copyProperties(user,userVo2);
+            userVo2.setRoleName(role.getRoleName());
+            request.getSession().setAttribute("currentUser",userVo2);
             JsonUtil.json(response, Result.success("登录成功！"));
         }
     }

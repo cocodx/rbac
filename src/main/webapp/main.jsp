@@ -23,7 +23,7 @@
 <body>
 <div id="cc" class="easyui-layout" style="width:100%;height:100%;">
     <div data-options="region:'north',title:'RBAC-系统主菜单界面',split:true" style="height:20%;">
-        系统主界面 ${currentUser.userName}
+        欢迎： ${currentUser.userName}【${currentUser.roleName}】
     </div>
 <%--    <div data-options="region:'south',title:'South Title',split:true" style="height:20%;"></div>--%>
 <%--    <div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>--%>

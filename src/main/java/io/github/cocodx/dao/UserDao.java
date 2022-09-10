@@ -2,7 +2,7 @@ package io.github.cocodx.dao;
 
 import io.github.cocodx.entity.User;
 import io.github.cocodx.util.DbUtil;
-import io.github.cocodx.vo.UserVo;
+import io.github.cocodx.entity.dto.UserDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,13 +15,13 @@ import java.sql.SQLException;
  **/
 public class UserDao {
 
-    public User login(UserVo userVo, Connection connection) throws SQLException {
+    public User login(UserDto userDto, Connection connection) throws SQLException {
         String sql = "select * from t_user where user_name=? and password=?";
         User user = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, userVo.getUserName());
-            preparedStatement.setString(2, userVo.getPassword());
+            preparedStatement.setString(1, userDto.getUserName());
+            preparedStatement.setString(2, userDto.getPassword());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 user = new User();
