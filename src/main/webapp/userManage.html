@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+  <link rel="stylesheet" type="text/css" href="./css/common.css">
+  <link rel="stylesheet" type="text/css" href="./easyui/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="./easyui/themes/icon.css">
+  <script type="text/javascript" src="./easyui/jquery.min.js"></script>
+  <script type="text/javascript" src="./easyui/jquery.easyui.min.js"></script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="用户管理" class="easyui-datagrid" fitColumns="true" pagination="true" rownumbers="true" url="user?action=list" fit="true" toolbar="#tb">
+  <thead>
+  <tr>
+    <th field="cb" checkbox="true" align="center"></th>
+    <th field="userId" width="50" align="center">编号</th>
+    <th field="userName" width="100" align="center">用户名</th>
+    <th field="password" width="100" align="center">用户密码</th>
+    <th field="roleName" width="150" align="center">用户角色</th>
+    <th field="remarks" width="300" align="center">备注</th>
+  </tr>
+  </thead>
+</table>
+</body>
+</html>

@@ -4,11 +4,9 @@ import io.github.cocodx.dao.AuthDao;
 import io.github.cocodx.dao.RoleDao;
 import io.github.cocodx.entity.Auth;
 import io.github.cocodx.entity.Role;
-import io.github.cocodx.entity.User;
 import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
-import io.github.cocodx.util.Result;
 import io.github.cocodx.vo.AuthVo;
 
 import javax.servlet.ServletException;
@@ -17,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -92,11 +91,14 @@ public class AuthServlet extends HttpServlet {
     public static List<AuthVo> copyVo(List<Auth> auths) {
         List<AuthVo> collect = auths.stream().map(item -> {
             AuthVo authVo = new AuthVo();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("authPath",item.getAuthPath());
             authVo.setId(item.getAuthId())
                     .setText(item.getAuthName())
                     .setIconCls(item.getIconCls())
                     .setState(item.getState() == 0 ? "closed" : "open")
                     .setChecked(false)
+                    .setAttributes(hashMap)
             ;
             if (item.getChildren() != null && item.getChildren().size() > 0) {
                 authVo.setChildren(copyVo(item.getChildren()));

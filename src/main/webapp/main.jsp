@@ -50,7 +50,7 @@
 </div>
 <div id="dlg-buttons">
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="updatePassword()">Submit</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no'" onclick="clearForm()">Clear</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no'" onclick="updatePasswordDialogClose()">Clear</a>
 </div>
 <script type="text/javascript">
 //新建tab，激活tab
@@ -81,12 +81,14 @@ $(function (){
     function openTab(node){
         console.log(node)
         if($("#tabs").tabs("exists",node.text)){
-            $("#tabs").tabs("select");
+            $("#tabs").tabs("select",node.text);
         }else{
+            var content="<iframe frameborder=0 scrolling='auto' style='width=100%;height=100%' src="+node.attributes.authPath+"></iframe>"
             $("#tabs").tabs("add",{
                 title:node.text,
                 selected:true,
-                content:'测试内容'
+                content:content,
+                closed:true
             });
         }
     };

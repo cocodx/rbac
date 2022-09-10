@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author amazfit
@@ -18,6 +19,8 @@ public class AuthVo implements Serializable {
     private String text;
     private String iconCls;
     private String state;
+    private Map<String,Object> attributes;
+
     private Boolean checked;
     private List<AuthVo> children;
 
