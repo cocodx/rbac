@@ -7,6 +7,7 @@ import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
 import io.github.cocodx.entity.dto.UserDto;
 import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
+import io.github.cocodx.entity.vo.PageVo;
 import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
@@ -19,12 +20,13 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -72,7 +74,27 @@ public class UserServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+        if (action.equals("list")){
+            try {
+                List<UserVo> list = findUserList();
+                PageVo<List<UserVo>> pageVo = new PageVo();
+                pageVo.setTotal(list.size())
+                        .setRows(list)
+                        ;
+                JsonUtil.json(resp,pageVo);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
+    }
+
+    /**
+     * 获取用户列表
+     * @return
+     */
+    private List<UserVo> findUserList()throws Exception {
+        return userDao.findUserList(DbUtil.connection());
     }
 
     /**
