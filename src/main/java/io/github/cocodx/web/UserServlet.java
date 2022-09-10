@@ -77,6 +77,7 @@ public class UserServlet extends HttpServlet {
         String code = (String) request.getSession().getAttribute("code");
         if (!userDto.getCode().equalsIgnoreCase(code)) {
             JsonUtil.json(response, Result.fail("温馨提示：验证码错误！"));
+            return;
         }
 
         User user = userDao.login(userDto, DbUtil.connection());

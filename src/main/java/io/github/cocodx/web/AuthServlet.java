@@ -5,6 +5,7 @@ import io.github.cocodx.dao.RoleDao;
 import io.github.cocodx.entity.Auth;
 import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
 import io.github.cocodx.util.Result;
@@ -40,7 +41,7 @@ public class AuthServlet extends HttpServlet {
         List<Auth> auths;
         HashSet<Long> authIdSet = new HashSet<>();
         try {
-            User user = (User) req.getSession().getAttribute("currentUser");
+            UserVo user = (UserVo) req.getSession().getAttribute("currentUser");
             addIdSet(authIdSet,roleDao.findRoleById(user.getRoleId(), DbUtil.connection()));
             auths = authDao.findTreeList(DbUtil.connection());
         } catch (SQLException | ClassNotFoundException e) {

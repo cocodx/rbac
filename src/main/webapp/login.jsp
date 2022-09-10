@@ -96,13 +96,9 @@
                 console.log(result);//打印服务端返回的数据(调试用)
                 if (result.code === 200) {
                     location.href="${pageContext.request.contextPath}/user?action=main"
-                } else {
+                } else if (result.code === 500) {
                     alert(result.msg)
                 }
-                ;
-            },
-            error: function () {
-                alert("异常！");
             }
         })
     };

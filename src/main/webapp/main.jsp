@@ -30,7 +30,13 @@
     <div data-options="region:'west',title:'菜单',split:true" style="width:20%;">
         <ul class="easyui-tree" data-options="url:'${pageContext.request.contextPath}/auth?action=tree'"></ul>
     </div>
-    <div data-options="region:'center',title:'内容中心'" style="padding:5px;background-color:#eee;"></div>
+    <div data-options="region:'center',title:'内容中心'" style="padding:5px;background-color:#eee;">
+        <div id="tt" class="easyui-tabs" style="width: 100%;height: 100%">
+            <div title="tab1" style="padding: 20px;display: none">
+                tab1
+            </div>
+        </div>
+    </div>
 </div>
 
 
