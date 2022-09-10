@@ -6,6 +6,7 @@ import io.github.cocodx.dao.UserDao;
 import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
 import io.github.cocodx.entity.dto.UserDto;
+import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
@@ -23,6 +24,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.Random;
 
 /**
@@ -63,7 +65,42 @@ public class UserServlet extends HttpServlet {
             req.getSession().invalidate();
             resp.sendRedirect("login.jsp");
         }
+        if (action.equals("updatePassword")){
+            try {
+                updatePassword(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
+    }
+
+    /**
+     * 修改密码
+     * @param request
+     * @param response
+     */
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+        String yesPassword = request.getParameter("yesPassword");
+        UserDto userDto = new UserDto().setUserName(userName).setPassword(password);
+        User user = userDao.login(userDto, DbUtil.connection());
+        if (user == null) {
+            JsonUtil.json(response, Result.fail("温馨提示：用户名或密码错误，未找到此用户！"));
+            return;
+        }
+        if (!newPassword.equals(yesPassword)){
+            JsonUtil.json(response, Result.fail("温馨提示：确认密码错误，请重新输入！"));
+            return;
+        }
+        UserUpdatePasswordDto userUpdate = new UserUpdatePasswordDto().setUserName(userName)
+                .setPassword(password)
+                .setNewPassword(newPassword)
+                .setYesPassword(yesPassword);
+        userDao.updatePassword(userUpdate,DbUtil.connection());
+        JsonUtil.json(response, Result.success("修改密码成功"));
     }
 
     /**

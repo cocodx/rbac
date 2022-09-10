@@ -1,6 +1,7 @@
 package io.github.cocodx.dao;
 
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.entity.dto.UserDto;
 
@@ -39,5 +40,24 @@ public class UserDao {
             DbUtil.closeConnection(connection);
         }
         return user;
+    }
+
+    /**
+     * 修改用户密码
+     * @param userUpdate
+     * @param connection
+     */
+    public void updatePassword(UserUpdatePasswordDto userUpdate, Connection connection) throws SQLException {
+        String sql = "update t_user set password=? where user_name=?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userUpdate.getNewPassword());
+            preparedStatement.setString(2, userUpdate.getUserName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtil.closeConnection(connection);
+        }
     }
 }
