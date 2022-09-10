@@ -1,6 +1,7 @@
 package io.github.cocodx.dao;
 
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.dto.UserSaveDto;
 import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
@@ -103,5 +104,69 @@ public class UserDao {
             }
         }
         return list;
+    }
+
+    /**
+     * 根据用户名称查找数量
+     * @param userName
+     * @param connection
+     * @return
+     */
+    public Integer countByUserName(String userName, Connection connection) {
+        String sql = "select count(*) as count from t_user where user_name = ?";
+        Integer count = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                DbUtil.closeConnection(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
+    }
+
+    public Integer updateUser(UserSaveDto userSaveDto, Connection connection) {
+        return 0;
+    }
+
+    /**
+     * 保存用户
+     * @param userSaveDto
+     * @param connection
+     * @return
+     */
+    public Integer saveUser(UserSaveDto userSaveDto, Connection connection) {
+        String sql = "insert into t_user values (null,?,?,?,?,?)";
+        Integer count = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userSaveDto.getUserName());
+            preparedStatement.setString(2, userSaveDto.getPassword());
+            preparedStatement.setInt(3, userSaveDto.getUserType());
+            preparedStatement.setLong(4, userSaveDto.getRoleId());
+            preparedStatement.setString(5, userSaveDto.getRemarks());
+            boolean execute = preparedStatement.execute();
+            if (execute){
+                count = 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                DbUtil.closeConnection(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 }

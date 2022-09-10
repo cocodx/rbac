@@ -45,8 +45,8 @@
         <table cellspacing="4px" style="margin: auto;">
             <tr><td>用户名：</td><td><input type="text" name="userName" id="userName" readonly="readonly" value="${currentUser.userName}"></td></tr>
             <tr><td>原密码：</td><td><input type="password" class="easyui-validatebox" name="password" id="password" data-options="required:true"></td></tr>
-            <tr><td>新密码：</td><td><input type="newPassword" name="newPassword" class="easyui-validatebox" id="newPassword" data-options="required:true" ></td></tr>
-            <tr><td>确认密码：</td><td><input type="yesPassword" name="yesPassword" class="easyui-validatebox" id="yesPassword" data-options="required:true"></td></tr>
+            <tr><td>新密码：</td><td><input type="text" name="newPassword" class="easyui-validatebox" id="newPassword" data-options="required:true" ></td></tr>
+            <tr><td>确认密码：</td><td><input type="text" name="yesPassword" class="easyui-validatebox" id="yesPassword" data-options="required:true"></td></tr>
         </table>
     </form>
 </div>

@@ -6,6 +6,7 @@ import io.github.cocodx.dao.UserDao;
 import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
 import io.github.cocodx.entity.dto.UserDto;
+import io.github.cocodx.entity.dto.UserSaveDto;
 import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.entity.vo.PageVo;
 import io.github.cocodx.entity.vo.UserVo;
@@ -13,6 +14,7 @@ import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
 import io.github.cocodx.util.Result;
 import io.github.cocodx.util.StrUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -88,7 +90,63 @@ public class UserServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+        if (action.equals("isRepeat")){
+            try {
+                isRepeat(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (action.equals("save")){
+            try {
+                save(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
+    }
+
+    private void save(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+        String id = req.getParameter("id");
+        String userName = req.getParameter("userName");
+        String password = req.getParameter("password");
+        String roleId = req.getParameter("roleId");
+        String remarks = req.getParameter("remarks");
+        UserSaveDto userSaveDto = new UserSaveDto();
+        userSaveDto.setUserName(userName)
+                .setPassword(password)
+                .setRoleId(Long.valueOf(roleId))
+                .setRemarks(remarks)
+                ;
+        Integer result = 0;
+        if (StringUtils.isNotBlank(id)){
+            userSaveDto.setId(Long.valueOf(id));
+            result = userDao.updateUser(userSaveDto,DbUtil.connection());
+        }else{
+            result = userDao.saveUser(userSaveDto,DbUtil.connection());
+        }
+        if (result>0){
+            JsonUtil.json(resp,Result.success());
+        }else{
+            JsonUtil.json(resp,Result.success());
+        }
+    }
+
+    /**
+     * 判断用户名称是否重复
+     * @param req
+     * @param resp
+     * @throws Exception
+     */
+    private void isRepeat(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+        String userName = req.getParameter("userName");
+        Integer count = userDao.countByUserName(userName,DbUtil.connection());
+        if (count>0){
+            JsonUtil.json(resp,Result.fail("温馨提示，用户名不能重复！"));
+            return;
+        }
+        JsonUtil.json(resp,Result.success());
     }
 
     /**

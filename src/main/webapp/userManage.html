@@ -25,7 +25,7 @@
 </table>
 <div id="tb">
   <div>
-    <a href="" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+    <a href="javascript:openUserDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
     <a href="" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
     <a href="" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
   </div>
@@ -36,12 +36,35 @@
     <a href="javascript:clear()" class="easyui-linkbutton" iconCls="icon-clear" plain="true">重置</a>
   </div>
 </div>
+<div id="userDialog" title="修改密码" data-options="iconCls:'icon-save'" class="easyui-dialog" style="width: 400px;height: 230px;padding: 10px" buttons="#dlg-buttons">
+  <form id="ff" method="post">
+    <table cellspacing="4px" style="margin: auto;">
+      <tr><td>用户名：</td><td><input type="text" name="userName" id="userName" class="easyui-validatebox" data-options="required:true" ></td></tr>
+      <tr><td>用户密码：</td><td><input type="text" name="password" id="password" class="easyui-validatebox" data-options="required:true"></td></tr>
+      <tr><td>用户角色：</td><td><input type="text" name="roleId" id="roleId" class="easyui-validatebox"  data-options="required:true" ></td></tr>
+      <tr><td>备注：</td><td><textarea rows="2" name="remarks" id="remarks"></textarea></td></tr>
+    </table>
+  </form>
+</div>
+<div id="dlg-buttons">
+  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="saveUser()">Submit</a>
+  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no'" onclick="clearUser()">Clear</a>
+</div>
 <script type="text/javascript">
   $(function (){
     $('#s_roleId').combobox({
       url:'role?action=comBoList',
       valueField:'id',
       textField:'text'
+    });
+    $('#roleId').combobox({
+      url:'role?action=comBoList',
+      valueField:'id',
+      textField:'text'
+    });
+    //关闭dialog
+    $('#userDialog').dialog({
+      closed:true
     });
   })
 
@@ -55,6 +78,55 @@
   function clear(){
     $("#s_userName").val('');
     $('#s_roleId').combobox('clear');
+  }
+
+  function openUserDialog(){
+    $('#userDialog').dialog('open');
+  }
+  //提交用户表单
+  function saveUser(){
+    $("#ff").form('submit',{
+      url:'user?action=save',
+      onSubmit: function (){
+        //用户名不能相同，去重判断
+        var userName = $("#userName").val();
+        $.ajax({
+          method:'post',
+          url:'user?action=isRepeat&userName='+userName,
+          success:function (result){
+            if (result.code!==200){
+              $.messager.alert('系统提示',result.msg);
+              return false;
+            }
+          }
+        })
+        return true;
+      },
+      success: function (result){
+        //result是字符串，需要转成对象
+        var parse = JSON.parse(result);
+        if(parse.code===200){
+          $.messager.alert('系统提示','用户添加成功！');
+          closeUserDialog();
+          //刷新table
+          $('#dg').datagrid('reload');
+        }else{
+          $.messager.alert('系统提示',result.msg);
+        }
+      }
+    });
+  }
+  //清除用户表单数据
+  function clearUser(){
+    $("#userName").val('');
+    $("#password").val('');
+    $('#roleId').combobox('clear');
+    $("#remarks").val('');
+  }
+
+  function closeUserDialog(){
+    clearUser();
+    $('#userDialog').dialog('close');
   }
 </script>
 </body>
