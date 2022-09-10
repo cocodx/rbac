@@ -14,7 +14,6 @@
         }
     %>
     <title>rbac-主界面</title>
-    <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="stylesheet" type="text/css" href="./easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="./easyui/themes/icon.css">
     <script type="text/javascript" src="./easyui/jquery.min.js"></script>
@@ -84,15 +83,12 @@ $(function (){
         if($("#tabs").tabs("exists",node.text)){
             $("#tabs").tabs("select",node.text);
         }else{
-            var content="<iframe src="+node.attributes.authPath+"></iframe>"
             $("#tabs").tabs("add",{
                 title:node.text,
                 selected:true,
                 iconCls:node.iconCls,
-                content:content,
                 closable:true,
-                width:'100%',
-                height:'100%'
+                content:'<iframe src='+node.attributes.authPath+' style="width:100%;height:100%" scrolling="auto" frameborder="0" ></iframe>'
             });
         }
     };
