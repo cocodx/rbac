@@ -76,7 +76,9 @@ public class UserServlet extends HttpServlet {
         }
         if (action.equals("list")){
             try {
-                List<UserVo> list = findUserList();
+                String s_userName = req.getParameter("s_userName");
+                String s_roleId = req.getParameter("s_roleId");
+                List<UserVo> list = findUserList(s_userName,s_roleId);
                 PageVo<List<UserVo>> pageVo = new PageVo();
                 pageVo.setTotal(list.size())
                         .setRows(list)
@@ -93,8 +95,8 @@ public class UserServlet extends HttpServlet {
      * 获取用户列表
      * @return
      */
-    private List<UserVo> findUserList()throws Exception {
-        return userDao.findUserList(DbUtil.connection());
+    private List<UserVo> findUserList(String s_userName,String s_roleId)throws Exception {
+        return userDao.findUserList(s_userName,s_roleId,DbUtil.connection());
     }
 
     /**

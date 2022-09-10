@@ -14,6 +14,8 @@
         }
     %>
     <title>rbac-主界面</title>
+    <link rel="shortcut icon" href="./imgs/logo32.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="stylesheet" type="text/css" href="./easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="./easyui/themes/icon.css">
     <script type="text/javascript" src="./easyui/jquery.min.js"></script>

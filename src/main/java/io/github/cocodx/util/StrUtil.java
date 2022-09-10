@@ -18,4 +18,8 @@ public class StrUtil {
         }
         return buffer.toString();
     }
+
+    public static String likeStr(String str){
+        return "'%"+str+"%'";
+    }
 }

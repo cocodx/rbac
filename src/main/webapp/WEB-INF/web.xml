@@ -28,4 +28,14 @@
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RoleServlet</servlet-name>
+        <servlet-class>io.github.cocodx.web.RoleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RoleServlet</servlet-name>
+        <url-pattern>/role</url-pattern>
+    </servlet-mapping>
 </web-app>

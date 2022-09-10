@@ -5,6 +5,8 @@ import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.entity.vo.UserVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.entity.dto.UserDto;
+import io.github.cocodx.util.StrUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,11 +66,20 @@ public class UserDao {
         }
     }
 
-    public List<UserVo> findUserList(Connection connection) {
-        String sql = "SELECT u.*,r.role_name FROM t_user u LEFT JOIN t_role r ON u.role_id=r.role_id; ";
+    public List<UserVo> findUserList(String s_userName, String s_roleId, Connection connection) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT u.*,r.role_name FROM t_user u LEFT JOIN t_role r ON u.role_id=r.role_id");
+        sql.append(" where 1=1");
+        if (StringUtils.isNotBlank(s_userName)){
+            sql.append(" and u.user_name like "+ StrUtil.likeStr(s_userName));
+        }
+        if (StringUtils.isNotBlank(s_roleId)){
+            sql.append(" and u.role_id = "+s_roleId);
+        }
+
         List<UserVo> list = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 UserVo user = new UserVo();
