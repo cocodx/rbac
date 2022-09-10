@@ -18,6 +18,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -58,7 +59,10 @@ public class UserServlet extends HttpServlet {
             //不带任何信息，session中的信息会获取到
             resp.sendRedirect("main.jsp");
         }
-
+        if(action.equals("logout")){
+            req.getSession().invalidate();
+            resp.sendRedirect("login.jsp");
+        }
 
     }
 
