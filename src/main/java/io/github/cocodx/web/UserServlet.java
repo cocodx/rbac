@@ -104,9 +104,37 @@ public class UserServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
-
+        if (action.equals("delete")){
+            try {
+                delete(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
+    /**
+     * 删除
+     * @param req
+     * @param resp
+     * @throws Exception
+     */
+    private void delete(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+        String ids = req.getParameter("ids");
+        if (StringUtils.isEmpty(ids)){
+            JsonUtil.json(resp,Result.fail("ids不能为空"));
+            return;
+        }
+        userDao.delete(ids,DbUtil.connection());
+        JsonUtil.json(resp,Result.success());
+    }
+
+    /**
+     * 新增或者修改
+     * @param req
+     * @param resp
+     * @throws Exception
+     */
     private void save(HttpServletRequest req, HttpServletResponse resp)throws Exception {
         String id = req.getParameter("userId");
         String userName = req.getParameter("userName");

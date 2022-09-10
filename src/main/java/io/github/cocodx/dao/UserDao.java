@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -188,5 +189,26 @@ public class UserDao {
             }
         }
         return count;
+    }
+
+    /**
+     * 删除用户
+     * @param ids
+     * @param connection
+     */
+    public void delete(String ids, Connection connection) {
+        String sql = "delete from t_user where user_id in ("+ids+")";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                DbUtil.closeConnection(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

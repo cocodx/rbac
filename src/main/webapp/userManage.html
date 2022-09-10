@@ -103,6 +103,36 @@
 
   //删除
   function deleteUser(){
+    var selectRows = $("#dg").datagrid('getChecked');
+    console.log(selectRows);
+    if(selectRows.length==0){
+      $.messager.alert('系统提示','请至少选中一行！','warning');
+    }
+    var ids="";
+    var userNames="";
+    var arrId = selectRows.map(function (item,index,arr){
+      return item.userId
+    });
+    var arrUserName = selectRows.map(function (item,index,arr){
+      return item.userName
+    });
+    ids = arrId.join();
+    userNames = arrUserName.join();
+
+    $.messager.confirm('删除',"温馨提示，您确定要删除："+userNames,function(r){
+      if(r){
+        $.ajax({
+          method:'post',
+          url:'user?action=delete&ids='+ids,
+          success:function (result){
+            $.messager.alert('系统提示',result.msg);
+            //刷新table
+            $('#dg').datagrid('reload');
+          }
+        })
+      }
+
+    })
 
   }
 
