@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="./easyui/themes/icon.css">
     <script type="text/javascript" src="./easyui/jquery.min.js"></script>
     <script type="text/javascript" src="./easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./easyui/locale/easyui-lang-zh_CN.js"></script>
 </head>
 <body>
 <div id="cc" class="easyui-layout" style="width:100%;height:100%;">
@@ -83,12 +84,15 @@ $(function (){
         if($("#tabs").tabs("exists",node.text)){
             $("#tabs").tabs("select",node.text);
         }else{
-            var content="<iframe frameborder=0 scrolling='auto' style='width=100%;height=100%' src="+node.attributes.authPath+"></iframe>"
+            var content="<iframe src="+node.attributes.authPath+"></iframe>"
             $("#tabs").tabs("add",{
                 title:node.text,
                 selected:true,
+                iconCls:node.iconCls,
                 content:content,
-                closed:true
+                closable:true,
+                width:'100%',
+                height:'100%'
             });
         }
     };

@@ -94,3 +94,37 @@
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
 }
+
+.icon-home{
+	background:url('usericons/home.png') no-repeat center center;
+}
+.icon-permission{
+	background:url('usericons/permission.png') no-repeat center center;
+}
+.icon-student{
+	background:url('usericons/student.png') no-repeat center center;
+}
+.icon-course{
+	background:url('usericons/course.png') no-repeat center center;
+}
+.icon-item{
+	background:url('usericons/item.png') no-repeat center center;
+}
+
+.icon-userManage{
+	background:url('usericons/userManage.png') no-repeat center center;
+}
+
+.icon-roleManage{
+	background:url('usericons/roleManage.png') no-repeat center center;
+}
+
+.icon-menuManage{
+	background:url('usericons/menuManage.png') no-repeat center center;
+}
+.icon-modifyPassword{
+	background:url('usericons/modifyPassword.png') no-repeat center center;
+}
+.icon-exit{
+	background:url('usericons/exit.png') no-repeat center center;
+}
