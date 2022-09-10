@@ -85,13 +85,15 @@ $(function (){
         if($("#tabs").tabs("exists",node.text)){
             $("#tabs").tabs("select",node.text);
         }else{
-            $("#tabs").tabs("add",{
-                title:node.text,
-                selected:true,
-                iconCls:node.iconCls,
-                closable:true,
-                content:'<iframe src='+node.attributes.authPath+' style="width:100%;height:100%" scrolling="auto" frameborder="0" ></iframe>'
-            });
+            if(node.attributes.authPath!=null && node.attributes.authPath!=''){
+                $("#tabs").tabs("add",{
+                    title:node.text,
+                    selected:true,
+                    iconCls:node.iconCls,
+                    closable:true,
+                    content:'<iframe src='+node.attributes.authPath+' style="width:100%;height:100%" scrolling="auto" frameborder="0" ></iframe>'
+                });
+            }
         }
     };
 
