@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class UserSaveDto {
 
-    private Long id;
+    private Long userId;
 
     private String userName;
 

@@ -135,7 +135,27 @@ public class UserDao {
     }
 
     public Integer updateUser(UserSaveDto userSaveDto, Connection connection) {
-        return 0;
+        String sql = "update t_user set user_name=?,password=?,user_type=?,role_id=?,remarks=? where user_id=?";
+        Integer count = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userSaveDto.getUserName());
+            preparedStatement.setString(2, userSaveDto.getPassword());
+            preparedStatement.setInt(3, userSaveDto.getUserType());
+            preparedStatement.setLong(4, userSaveDto.getRoleId());
+            preparedStatement.setString(5, userSaveDto.getRemarks());
+            preparedStatement.setLong(6, userSaveDto.getUserId());
+            count = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                DbUtil.closeConnection(connection);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 
     /**

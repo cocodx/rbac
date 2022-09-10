@@ -108,7 +108,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void save(HttpServletRequest req, HttpServletResponse resp)throws Exception {
-        String id = req.getParameter("id");
+        String id = req.getParameter("userId");
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
         String roleId = req.getParameter("roleId");
@@ -119,9 +119,9 @@ public class UserServlet extends HttpServlet {
                 .setRoleId(Long.valueOf(roleId))
                 .setRemarks(remarks)
                 ;
-        Integer result = 0;
+        Integer result;
         if (StringUtils.isNotBlank(id)){
-            userSaveDto.setId(Long.valueOf(id));
+            userSaveDto.setUserId(Long.valueOf(id));
             result = userDao.updateUser(userSaveDto,DbUtil.connection());
         }else{
             result = userDao.saveUser(userSaveDto,DbUtil.connection());
