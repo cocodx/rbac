@@ -5,6 +5,7 @@ import io.github.cocodx.dao.RoleDao;
 import io.github.cocodx.dao.UserDao;
 import io.github.cocodx.entity.Role;
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.dto.PageDto;
 import io.github.cocodx.entity.dto.UserDto;
 import io.github.cocodx.entity.dto.UserSaveDto;
 import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
@@ -80,7 +81,12 @@ public class UserServlet extends HttpServlet {
             try {
                 String s_userName = req.getParameter("s_userName");
                 String s_roleId = req.getParameter("s_roleId");
-                List<UserVo> list = findUserList(s_userName,s_roleId);
+                String page = req.getParameter("page");
+                String rows = req.getParameter("rows");
+                PageDto pageDto = new PageDto();
+                pageDto.setPage(Integer.parseInt(page));
+                pageDto.setRows(Integer.parseInt(rows));
+                List<UserVo> list = findUserList(s_userName,s_roleId,pageDto);
                 PageVo<List<UserVo>> pageVo = new PageVo();
                 pageVo.setTotal(list.size())
                         .setRows(list)
@@ -181,8 +187,8 @@ public class UserServlet extends HttpServlet {
      * 获取用户列表
      * @return
      */
-    private List<UserVo> findUserList(String s_userName,String s_roleId)throws Exception {
-        return userDao.findUserList(s_userName,s_roleId,DbUtil.connection());
+    private List<UserVo> findUserList(String s_userName,String s_roleId,PageDto pageDto)throws Exception {
+        return userDao.findUserList(s_userName,s_roleId,pageDto,DbUtil.connection());
     }
 
     /**

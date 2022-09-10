@@ -1,6 +1,7 @@
 package io.github.cocodx.dao;
 
 import io.github.cocodx.entity.User;
+import io.github.cocodx.entity.dto.PageDto;
 import io.github.cocodx.entity.dto.UserSaveDto;
 import io.github.cocodx.entity.dto.UserUpdatePasswordDto;
 import io.github.cocodx.entity.vo.UserVo;
@@ -68,7 +69,7 @@ public class UserDao {
         }
     }
 
-    public List<UserVo> findUserList(String s_userName, String s_roleId, Connection connection) {
+    public List<UserVo> findUserList(String s_userName, String s_roleId, PageDto pageDto, Connection connection) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT u.*,r.role_name FROM t_user u LEFT JOIN t_role r ON u.role_id=r.role_id");
         sql.append(" where 1=1");
@@ -78,6 +79,7 @@ public class UserDao {
         if (StringUtils.isNotBlank(s_roleId)){
             sql.append(" and u.role_id = "+s_roleId);
         }
+        sql.append(" limit "+pageDto.getStart() +","+pageDto.getRows());
 
         List<UserVo> list = new ArrayList<>();
         try {
