@@ -40,6 +40,7 @@
       <input type="hidden" id="roleId" name="roleId" />
       <tr><td>角色名：</td><td><input type="text" name="roleName" id="roleName" class="easyui-validatebox" data-options="required:true" ></td></tr>
       <tr><td>树：</td><td>
+        <input type="hidden" name="authIds" id="authIds"/>
         <ul id="authIdTree" class="easyui-tree">
 
         </ul>
@@ -135,26 +136,19 @@
 
   }
 
-  //提交用户表单
-  function saveUser(){
+  //提交角色表单
+  function saveRole(){
     $("#ff").form('submit',{
-      url:'user?action=save',
+      url:'role?action=save',
       onSubmit: function (){
-        //用户名不能相同，去重判断
-        var userName = $("#userName").val();
-        var userId = $("#userId").val();
-        if (userId==null || userId==''){
-          $.ajax({
-            method:'post',
-            url:'user?action=isRepeat&userName='+userName,
-            success:function (result){
-              if (result.code!==200){
-                $.messager.alert('系统提示',result.msg);
-                return false;
-              }
-            }
-          })
+        //没有校验
+        var nodes = $('#authIdTree').tree('getChecked');
+        var authIds = [];
+        for (var i=0;i<nodes.length;i++){
+          authIds.push(nodes[i].id);
         }
+        var authIdsStr = authIds.join();
+        $("#authIds").val(authIdsStr);
         return true;
       },
       success: function (result){
@@ -162,7 +156,7 @@
         var parse = JSON.parse(result);
         if(parse.code===200){
           $.messager.alert('系统提示','操作成功');
-          closeUserDialog();
+          closeRoleDialog();
           //刷新table
           $('#dg').datagrid('reload');
         }else{
@@ -171,13 +165,12 @@
       }
     });
   }
-  //清除用户表单数据
+  //清除角色表单数据
   function clearUser(){
-    $("#userId").val('');
-    $("#userName").val('');
-    $("#password").val('');
-    $('#roleId').combobox('clear');
+    $("#roleName").val('');
     $("#remarks").val('');
+    //清除树的选中状态，都置为未勾选
+
   }
 
   function closeUserDialog(){

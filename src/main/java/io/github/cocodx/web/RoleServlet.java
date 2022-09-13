@@ -45,7 +45,29 @@ public class RoleServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+        if (action.equals("save")){
+            try {
+                save(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
+    }
+
+    /**
+     * 保存角色
+     * @param req
+     * @param resp
+     * @throws Exception
+     */
+    private void save(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        String roleId = req.getParameter("roleId");
+        String roleName = req.getParameter("roleName");
+        String authIds = req.getParameter("authIds");
+        String remarks = req.getParameter("remarks");
+        Role role = new Role().setRoleName(roleName).setAuthIds(authIds).setRemarks(remarks);
+        System.out.println(role);
     }
 
     /**
