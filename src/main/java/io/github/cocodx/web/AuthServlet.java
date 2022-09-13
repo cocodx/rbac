@@ -37,6 +37,51 @@ public class AuthServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String action = req.getParameter("action");
+        if (action.equals("tree")){
+            try {
+                tree(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }else if (action.equals("treeChecked")){
+            try {
+                treeChecked(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+    }
+
+    /**
+     * 加载所有菜单，标记已选菜单
+     * @param req
+     * @param resp
+     */
+    private void treeChecked(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+        //1.加载所有菜单，不进行过滤
+        //2.标记checked
+        String flag = req.getParameter("flag");
+        if (flag.equals("false")){
+            //添加不需要checked，直接返回所有
+            List<Auth> auths = authDao.findTreeList(DbUtil.connection());
+            List<AuthVo> treeData = copyVo(auths);
+            JsonUtil.json(resp, treeData);
+        }else{
+
+        }
+    }
+
+    /**
+     * 左侧菜单
+     * @param req
+     * @param resp
+     * @throws Exception
+     */
+    private void tree(HttpServletRequest req, HttpServletResponse resp)throws Exception {
         List<Auth> auths;
         HashSet<Long> authIdSet = new HashSet<>();
         try {

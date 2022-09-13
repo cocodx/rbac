@@ -24,47 +24,47 @@
 </table>
 <div id="tb">
   <div>
-    <a href="javascript:openUserDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-    <a href="javascript:openUpdateUserDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-    <a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+    <a href="javascript:openRoleDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+    <a href="javascript:openUpdateRoleDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+    <a href="javascript:deleteRole()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
   </div>
   <div>
-    &nbsp;用户名：&nbsp;<input type="text" name="s_userName" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchUser()"/>
-    &nbsp;用户角色：&nbsp;<input id="s_roleId" name="s_roleId" size="20" />
-    <a href="javascript:searchUser()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+    &nbsp;角色名：&nbsp;<input type="text" name="s_userName" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchUser()"/>
+    <a href="javascript:searchRole()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     <a href="javascript:clear()" class="easyui-linkbutton" iconCls="icon-clear" plain="true">重置</a>
   </div>
 </div>
-<div id="userDialog" title="修改密码" data-options="iconCls:'icon-save'" class="easyui-dialog" style="width: 400px;height: 230px;padding: 10px" buttons="#dlg-buttons">
+<div id="roleDialog" title="添加角色" data-options="iconCls:'icon-save'" class="easyui-dialog" style="width: 400px;height: 600px;padding: 10px" buttons="#dlg-buttons">
   <form id="ff" method="post">
     <table cellspacing="4px" style="margin: auto;">
-      <input type="hidden" id="userId" name="userId" />
-      <tr><td>用户名：</td><td><input type="text" name="userName" id="userName" class="easyui-validatebox" data-options="required:true" ></td></tr>
-      <tr><td>用户密码：</td><td><input type="text" name="password" id="password" class="easyui-validatebox" data-options="required:true"></td></tr>
-      <tr><td>用户角色：</td><td><input type="text" name="roleId" id="roleId" class="easyui-validatebox"  data-options="required:true" ></td></tr>
+      <input type="hidden" id="roleId" name="roleId" />
+      <tr><td>角色名：</td><td><input type="text" name="roleName" id="roleName" class="easyui-validatebox" data-options="required:true" ></td></tr>
+      <tr><td>树：</td><td>
+        <ul id="authIdTree" class="easyui-tree">
+
+        </ul>
+      </td></tr>
       <tr><td>备注：</td><td><textarea rows="2" name="remarks" id="remarks"></textarea></td></tr>
     </table>
   </form>
 </div>
 <div id="dlg-buttons">
-  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="saveUser()">Submit</a>
-  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no'" onclick="clearUser()">Clear</a>
+  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="saveRole()">Submit</a>
+  <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-no'" onclick="clearRole()">Clear</a>
 </div>
 <script type="text/javascript">
   $(function (){
-    $('#s_roleId').combobox({
-      url:'role?action=comBoList',
-      valueField:'id',
-      textField:'text'
-    });
-    $('#roleId').combobox({
-      url:'role?action=comBoList',
-      valueField:'id',
-      textField:'text'
-    });
     //关闭dialog
-    $('#userDialog').dialog({
+    $('#roleDialog').dialog({
       closed:true
+    });
+    $('#authIdTree').tree({
+      lines:true,
+      checkbox:true,
+      url: 'auth?action=treeChecked&flag=false',
+      onLoadSuccess:function (){
+        $("#authIdTree").tree('expandAll');
+      },
     });
   })
 
@@ -81,8 +81,8 @@
   }
 
   //添加
-  function openUserDialog(){
-    $('#userDialog').dialog('open');
+  function openRoleDialog(){
+    $('#roleDialog').dialog('open');
   }
 
   //修改
