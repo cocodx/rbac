@@ -1,7 +1,10 @@
 package io.github.cocodx.web;
 
 import io.github.cocodx.dao.RoleDao;
+import io.github.cocodx.entity.Role;
+import io.github.cocodx.entity.dto.PageDto;
 import io.github.cocodx.entity.vo.ComboboxVo;
+import io.github.cocodx.entity.vo.PageVo;
 import io.github.cocodx.util.DbUtil;
 import io.github.cocodx.util.JsonUtil;
 
@@ -35,6 +38,34 @@ public class RoleServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
+        if (action.equals("list")){
+            try {
+                list(req,resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    /**
+     * 分页
+     * @param req
+     * @param resp
+     */
+    private void list(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+        String page = req.getParameter("page");
+        String rows = req.getParameter("rows");
+        String keywords = req.getParameter("keywords");
+        PageDto pageDto = new PageDto();
+        pageDto.setPage(Integer.parseInt(page));
+        pageDto.setRows(Integer.parseInt(rows));
+        List<Role> roleList = roleDao.findRoleList(keywords,pageDto,DbUtil.connection());
+        PageVo<List<Role>> pageVo = new PageVo<>();
+        pageVo.setTotal(roleList.size())
+                .setRows(roleList)
+                ;
+        JsonUtil.json(resp,pageVo);
     }
 
     /**

@@ -1,7 +1,10 @@
 package io.github.cocodx.dao;
 
 import io.github.cocodx.entity.Role;
+import io.github.cocodx.entity.dto.PageDto;
 import io.github.cocodx.entity.vo.ComboboxVo;
+import io.github.cocodx.util.StrUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,5 +76,36 @@ public class RoleDao {
             }
         }
         return list;
+    }
+
+    public List<Role> findRoleList(String keywords, PageDto pageDto, Connection connection)throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT * FROM t_role");
+        sql.append(" where 1=1");
+        if (StringUtils.isNotBlank(keywords)) {
+            sql.append(" and (role_name like "+ StrUtil.likeStr(keywords) +" or remarks like "+ StrUtil.likeStr(keywords) +")");
+        }
+        sql.append(" limit "+pageDto.getStart()+","+pageDto.getRows());
+        List<Role> roleList = new ArrayList<>();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Role role = new Role();
+                role.setRoleId(resultSet.getLong("role_id"))
+                        .setRoleName(resultSet.getString("role_name"))
+                        .setAuthIds(resultSet.getString("auth_ids"))
+                        .setRemarks(resultSet.getString("remarks"))
+                ;
+                roleList.add(role);
+            }
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }finally {
+            if (connection!=null){
+                connection.close();
+            }
+        }
+        return roleList;
     }
 }
