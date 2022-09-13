@@ -49,6 +49,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         if (action.equals("code")) {
             code(req, resp);
@@ -142,6 +143,7 @@ public class UserServlet extends HttpServlet {
      * @throws Exception
      */
     private void save(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+
         String id = req.getParameter("userId");
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
